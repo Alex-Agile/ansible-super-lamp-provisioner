@@ -1,0 +1,13 @@
+---
+- name: generate TLS certificates
+  become: yes
+  become_method: sudo
+  command: >
+    openssl req
+    -x509
+    -nodes
+    -days 3650
+    -newkey rsa:2048
+    -subj /CN={{ inventory_hostname }}
+    -keyout /etc/ssl/certs/{{ inventory_hostname }}.key
+    -out /etc/ssl/certs/{{ inventory_hostname }}.crt

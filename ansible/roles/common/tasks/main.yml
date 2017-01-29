@@ -1,0 +1,21 @@
+---
+- name: Install python 2.7
+  raw: apt-get update -qq && apt-get install -qq python2.7
+  when: ubuntu_family=='xenial'
+
+- name: Upgrade packages
+  include: upgrade.yml
+
+- name: Configure hosts
+  include: hosts.yml
+
+- name: Configure Trusty aliases
+  include: aliases.yml
+
+- name: Install apt packages
+  include: packages.yml
+  vars:
+    packages:
+      - language-pack-en
+      - ant
+      - python-mysqldb

@@ -1,0 +1,20 @@
+---
+- name: Configure Trusty aliases
+  become: yes
+  become_method: sudo
+  lineinfile: >
+    dest=/home/vagrant/.bashrc
+    regexp="^alias ll="
+    line="alias ll='ls -alhF'"
+    state=present
+  when: ubuntu_family=='trusty'
+
+- name: Configure Xenial aliases
+  become: yes
+  become_method: sudo
+  lineinfile: >
+    dest=/home/ubuntu/.bashrc
+    regexp="^alias ll="
+    line="alias ll='ls -alhF'"
+    state=present
+  when: ubuntu_family=='xenial'

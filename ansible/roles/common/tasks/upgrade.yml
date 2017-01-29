@@ -1,0 +1,5 @@
+---
+- name: Upgrade packages
+  become: yes
+  become_method: sudo
+  apt: upgrade=dist update_cache=yes cache_valid_time=3600

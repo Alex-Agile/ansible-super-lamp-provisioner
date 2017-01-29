@@ -1,0 +1,40 @@
+---
+- name: Check if swap is already created
+  shell: swapon -s | grep swapfile | wc -l
+  register: swap_output_var
+
+- name: Create swap file
+  become: yes
+  become_method: sudo
+  shell: fallocate -l {{ size }} /swapfile
+  when: swap_output_var.stdout == "0"
+
+- name: Change swap permissions
+  become: yes
+  become_method: sudo
+  file:
+    path: /swapfile
+    mode: 0600
+  when: swap_output_var.stdout == "0"
+
+- name: Create swap filesystem
+  become: yes
+  become_method: sudo
+  shell: mkswap /swapfile
+  when: swap_output_var.stdout == "0"
+
+- name: Activating swap
+  become: yes
+  become_method: sudo
+  shell: swapon /swapfile
+  when: swap_output_var.stdout == "0"
+
+- name: Making swap permanent
+  become: yes
+  become_method: sudo
+  lineinfile: >
+    dest=/etc/fstab
+    regexp="swapfile"
+    line="/swapfile   none    swap    sw    0   0"
+    state=present
+  when: swap_output_var.stdout == "0"

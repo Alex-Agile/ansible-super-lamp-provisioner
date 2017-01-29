@@ -1,0 +1,6 @@
+---
+- name: Add Php7 repository
+  apt_repository: repo='ppa:ondrej/php'
+
+- name: Add MySQL7 repository
+  apt_repository: repo='ppa:ondrej/mysql-5.7'
